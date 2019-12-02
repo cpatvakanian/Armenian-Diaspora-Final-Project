@@ -3,7 +3,7 @@ title: "milestone_8"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, warnings= FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
 library(httr)
@@ -57,26 +57,8 @@ embassies <- read_csv(file = 'embassies.csv')
 all_data_merged <- read_csv(file = "all_data.csv") %>%
   slice(1:26)
 
-# Regression of data, but this is very
-# tricky to try and visualize because
-# the x variables are both continous
-# and binary and the y is continuous
-# so I'd have to hold some things constant
-# I am not quite sure what's the best way to
-# visualize this
-
-regression <- lm(Number_Comm ~ TopTen_Gen + TopTen_Dux + Number_Comm + Embassies + Population + Post_Soviet, data = all_data_merged)
-summary(regression)
 
 
-graph_regression <- ggplot(regression, aes(x= Number_Comm, y = overall)) +
-  geom_point( alpha = 0.5) +
-  facet_grid(. ~ divisional_distribution, labeller=labeller(divisional_distribution = labels)) +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Student Reported Workloads and Course Evaluations at Harvard", subtitle = "Relationship Varies Across Academic Divisions", caption= "Data From Spring 2019 Courtesy of Benny Chang '22",
-       x = "Average Workload in Hours per Week", y = "Average Student Evaluations")
-  
-question5_graph
 
 
 
@@ -115,5 +97,128 @@ mapCountryData(n, nameColumnToPlot="value", mapTitle="South America",
 
 ```
 
+```{r histogram}
+
+all_data_merged %>% mutate_if(is.character,as.integer)
+
+all_data_merged$Number_Comm <- as.integer(all_data_merged$Number_Comm)
+
+data_histogram <- all_data_merged %>%
+  select(Population,Number_Comm)
+
+histo.df <- as.data.frame(data_histogram)
+
+
+```
+
+```{r Diaspora Data Highlights}
+
+# here I am specifing countries which
+# have diasporas from the times of 
+# Armenian genocide immigrants fleeing
+# from Western Armenia in 1915
+
+d3 <- data.frame(
+  country=c("Argentina", "Canada",
+             "France", "Georgia", "Greece",
+             "Lebanon", "Russia", "Syria", "Ukraine", 
+           "United States", "Turkey",  "Uruguay", "Australia", "Israel"),
+  value=c(2, 2, 2, 2, 2, 2, 2, 2, -2, 2, 2, 2, 2, 2))
+
+n3 <- joinCountryData2Map(d3, joinCode="NAME", nameJoinColumn="country")
+
+mapCountryData(n3, nameColumnToPlot="value", mapTitle="Diasporas from Armenian Genocide",
+  mapRegion = "World",
+  colourPalette="red",
+  addLegend=FALSE,
+  oceanCol="lightblue", missingCountryCol="white")
+
+# This map here is showing us
+# the diasporas which exist after
+# the USSR collapsed and typically
+# attributing to existing bc of the
+# soviet union
+
+d4 <- data.frame(
+  country=c("Bulgaria", "Canada","Brazil",
+             "France", "Georgia", "Germany", "Greece",
+            "Kazakhstan", "Russia", "Turkmenistan", "Ukraine",
+           "United States", "Uzbekistan"),
+  value=c(2, 2, 2, 2, 2, 2, 2, 2, -2, 2, 2, 2,2))
+
+n4 <- joinCountryData2Map(d4, joinCode="NAME", nameJoinColumn="country")
+
+
+mapCountryData(n4, nameColumnToPlot="value", mapTitle="Post Soviet Diasporas",
+  mapRegion = "World",
+  colourPalette="blue",
+  addLegend=FALSE,
+  oceanCol="lightblue", missingCountryCol="white")
+
+# These are Diasporas which exist
+# for very specific historic reasons
+# and also reasons which realy have
+# no particular special explanation other
+# other than migration for economic
+
+d4 <- data.frame(
+  country=c( "Egypt",
+            "Iran",
+            "Iraq", "Sweden","Syria","United Kingdom", "Germany",
+            "Switzerland", "Israel"),
+  value=c(2, 2, 2, 2, 2, 2, -2, 2,2))
+
+n4 <- joinCountryData2Map(d4, joinCode="NAME", nameJoinColumn="country")
+
+
+mapCountryData(n4, nameColumnToPlot="value", mapTitle="Historic or 'Random' Diasporas",
+  mapRegion = "Eurasia",
+  colourPalette="Red",
+  addLegend=FALSE,
+  oceanCol="lightblue", missingCountryCol="white")
+
+
+```
+
+```{r What Influences Number of Communities}
+
+# Regression of data, but this is very
+# tricky to try and visualize because
+# the x variables are both continous
+# and binary and the y is continuous
+# so I'd have to hold some things constant
+# I am not quite sure what's the best way to
+# visualize this
+
+#regression <- lm(Number_Comm ~ TopTen_Gen + TopTen_Dux + Number_Comm + Embassies + Population + Post_Soviet, data = all_data_merged)
+#summary(regression)
+
+regression_for_graph <- lm(Number_Comm ~ Population + Post_Soviet, data = all_data_merged)
+
+
+regression_graph <- ggplot(regression_for_graph, aes(x= Population, y = Number_Comm)) +
+  geom_point( alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Population vs Number of Communities", subtitle = "Relationship Looks Positive", caption= "Wikipedia",
+       x = "Population Numbers (Official & Estimates)", y = "Number of Communities in a Country")
+  
+
+regression_graph
+
+```
+
+
+```{r About}
+
+# have this completed from previous one
+```
+## About the Armenian Diaspora Data Project
+This project is trying to better understand the trends and characteristics of the Armenian Diaspora communities which exist all over the world. Armenian Diaspora communities have existed for hundreds of years, but the primary large communities that scattered and exist today come from two major events in Armenian history. The first event was the Armenian Genocide of 1915, during which 1.5 Armenians and many other Christian minorities such as the Assyrians and Greeks were killed due to the genocidal campaign of the Ottoman Turkish government. The result of the genocide was the mass exodus of Armenians to countries such as Syria, France, Lebanon, Russia, the United States, Australia and even Argentina. The second major event which explains the diaspora communities of that exist in other parts of the world was the collapse of the USSR and subsequent socio-economic crisis, after which many Armenians immigrated to the United States, Russia, and various other countries. Of course, there also exist other older, but much smaller communities in Jerusalem and India - which have ties back to ancient Armenian religious ties and trade expeditions.
+
+## Data on the Diaspora
+Finding data on the Armenian Diaspora is notoriously difficult, but Wikipedia and Google trends are able to capture a rough idea of where Armenians are generally located. By looking at compilations of various sources on Wikipedia's Armenian Diaspora Communities page (https://en.wikipedia.org/wiki/Largest_Armenian_diaspora_communities), I am able to confirm for a variety of countries the number of communities and also the populations of those communities. Additionally, by looking at data on the Google Trends Website (https://trends.google.com/trends/?geo=US), I am able to look at these countries and try to look at trends or key words for Armenians that I think might confirm the census data. Interestingly, there are different and similar trends for Armenians depending on which community we are looking at (old vs newly formed).
+
+## About the Author
+I am a senior at Harvard College studying Economics with a minor in Government.
 
 
