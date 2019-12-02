@@ -1,0 +1,53 @@
+---
+title: "milestone_8"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(httr)
+library(knitr)
+library(plyr)
+library(glue)
+library(readxl)
+library(janitor)
+library(reprex)
+library(readxl)
+library(lubridate)
+library(anytime)
+library(moderndive)
+library(gt)
+library(purrr)
+library(tibble)
+library(forcats)
+library(infer)
+library(fs)
+library(devtools)
+library(googlesheets4)
+library(infer)
+library(ggplot2)
+library(scales)
+library(tidyverse)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r Setting up Data}
+
+
+data <- read_csv(file = 'Diaspora_Data.csv') %>%
+  slice(2:68) %>%
+  select(`Area[n 1]`, `Country`, `Official data/Estimates`)
+
+```
+
+
+```{r}
+
+```
+
