@@ -370,15 +370,54 @@ summary {
 <h2>R Markdown</h2>
 <p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
 <p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre><code>## Warning: Missing column names filled in: 'X5' [5]</code></pre>
 <pre><code>## Parsed with column specification:
 ## cols(
 ##   `#` = col_double(),
 ##   `Area[n 1]` = col_character(),
 ##   Country = col_character(),
 ##   `Official data/Estimates` = col_number(),
-##   X5 = col_logical()
+##   Communities = col_double()
 ## )</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Country = col_character(),
+##   Has_Emb = col_double()
+## )</code></pre>
+<pre><code>## Parsed with column specification:
+## cols(
+##   Country = col_character(),
+##   TopTen_Gen = col_double(),
+##   TopTen_Dux = col_double(),
+##   Number_Comm = col_double(),
+##   Embassies = col_double(),
+##   Population = col_double(),
+##   Post_Soviet = col_double()
+## )</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = Embassies ~ TopTen_Gen + TopTen_Dux + Number_Comm + 
+##     Population + Post_Soviet, family = &quot;binomial&quot;, data = all_data_merged)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -1.42581   0.00000   0.00000   0.00005   1.31250  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -2.266e+01  4.594e+03  -0.005    0.996
+## TopTen_Gen  -4.416e+01  2.966e+04  -0.001    0.999
+## TopTen_Dux   7.121e+01  3.381e+04   0.002    0.998
+## Number_Comm  2.332e+01  4.594e+03   0.005    0.996
+## Population  -9.771e-05  9.392e-05  -1.040    0.298
+## Post_Soviet  1.955e+00  2.093e+00   0.934    0.350
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 28.091  on 25  degrees of freedom
+## Residual deviance: 11.411  on 20  degrees of freedom
+## AIC: 23.411
+## 
+## Number of Fisher Scoring iterations: 22</code></pre>
 </div>
 
 

@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 library(httr)
 library(knitr)
-library(plyr)
+library(dplyr)
 library(glue)
 library(readxl)
 library(janitor)
@@ -37,12 +37,30 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r Setting up Data}
+```{r Setting up Data, warning = FALSE}
 
+# data is from wikipedia website:
 
-data <- read_csv(file = 'Diaspora_Data.csv') %>%
+diasporas <- read_csv(file = 'Diaspora_Data.csv') %>%
   slice(2:68) %>%
-  select(`Area[n 1]`, `Country`, `Official data/Estimates`)
+  select(`Area[n 1]`, `Country`, `Official data/Estimates`, `Communities`) %>%
+  group_by("Country")
+
+# Data is from embassies website: https://www.embassypages.com/armenia
+
+embassies <- read_csv(file = 'embassies.csv')
+
+# Merged data of communities, embassies, top google trends
+
+all_data_merged <- read_csv(file = "all_data.csv") %>%
+  slice(1:26)
+
+# Regression of data
+
+regression <- glm(Embassies ~ TopTen_Gen + TopTen_Dux + Number_Comm + Population + Post_Soviet, data = all_data_merged, family = "binomial")
+summary(regression)
+
+
 
 ```
 
