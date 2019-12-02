@@ -18,12 +18,14 @@ library(lubridate)
 library(anytime)
 library(moderndive)
 library(gt)
+library(maps)
 library(purrr)
 library(tibble)
 library(forcats)
 library(infer)
 library(fs)
 library(devtools)
+library(rworldmap)
 library(googlesheets4)
 library(infer)
 library(ggplot2)
@@ -55,17 +57,63 @@ embassies <- read_csv(file = 'embassies.csv')
 all_data_merged <- read_csv(file = "all_data.csv") %>%
   slice(1:26)
 
-# Regression of data
+# Regression of data, but this is very
+# tricky to try and visualize because
+# the x variables are both continous
+# and binary and the y is continuous
+# so I'd have to hold some things constant
+# I am not quite sure what's the best way to
+# visualize this
 
-regression <- glm(Embassies ~ TopTen_Gen + TopTen_Dux + Number_Comm + Population + Post_Soviet, data = all_data_merged, family = "binomial")
+regression <- lm(Number_Comm ~ TopTen_Gen + TopTen_Dux + Number_Comm + Embassies + Population + Post_Soviet, data = all_data_merged)
 summary(regression)
 
 
+graph_regression <- ggplot(regression, aes(x= Number_Comm, y = overall)) +
+  geom_point( alpha = 0.5) +
+  facet_grid(. ~ divisional_distribution, labeller=labeller(divisional_distribution = labels)) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Student Reported Workloads and Course Evaluations at Harvard", subtitle = "Relationship Varies Across Academic Divisions", caption= "Data From Spring 2019 Courtesy of Benny Chang '22",
+       x = "Average Workload in Hours per Week", y = "Average Student Evaluations")
+  
+question5_graph
+
+
+
 
 ```
 
 
-```{r}
+```{r MapGraphic}
+
+d <- data.frame(
+  country=c("Argentina", "Brazil", "Bulgaria", "Canada", "Egypt",
+             "France", "Georgia", "Germany", "Greece","Iran",
+            "Iraq", "Kazakhstan", "Lebanon", "Russia", "Sweden","Syria", "Turkmenistan", "Ukraine", "United Kingdom",
+           "United States", "Turkey", "Uzbekistan", "Uruguay", "Australia", "Switzerland", "Israel"),
+  value=c(2, 2, 2, 2, 2,2, 2, 2, 1, 2, -2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2))
+
+n <- joinCountryData2Map(d, joinCode="NAME", nameJoinColumn="country")
+
+mapCountryData(n, nameColumnToPlot="value", mapTitle="World",
+  mapRegion = "World",
+  colourPalette="terrain",
+  addLegend=FALSE,
+  oceanCol="lightblue", missingCountryCol="white")
+
+mapCountryData(n, nameColumnToPlot="value", mapTitle="Eurasia",
+  mapRegion = "Eurasia",
+  colourPalette="terrain",
+  addLegend=FALSE,
+  oceanCol="lightblue", missingCountryCol="white")
+
+mapCountryData(n, nameColumnToPlot="value", mapTitle="South America",
+  mapRegion = "Latin America",
+  colourPalette="terrain",
+  addLegend=FALSE,
+  oceanCol="lightblue", missingCountryCol="white")
 
 ```
+
+
 
