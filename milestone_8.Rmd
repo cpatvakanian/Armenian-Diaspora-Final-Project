@@ -19,6 +19,7 @@ library(anytime)
 library(moderndive)
 library(gt)
 library(maps)
+library(png)
 library(purrr)
 library(tibble)
 library(forcats)
@@ -66,7 +67,7 @@ all_data_merged <- read_csv(file = "all_data.csv") %>%
 ```
 
 
-```{r MapGraphic}
+```{r MapGraphic 1}
 
 d <- data.frame(
   country=c("Argentina", "Brazil", "Bulgaria", "Canada", "Egypt",
@@ -77,25 +78,40 @@ d <- data.frame(
 
 n <- joinCountryData2Map(d, joinCode="NAME", nameJoinColumn="country")
 
-mapCountryData(n, nameColumnToPlot="value", mapTitle="World",
+png("diaspora_final_project/world_map.png",width=800,height=600,units="px")
+world <- mapCountryData(n, nameColumnToPlot="value", mapTitle="Overview of Armenian Diaspora Communities in the World",
   mapRegion = "World",
-  colourPalette="terrain",
-  addLegend=FALSE,
-  oceanCol="lightblue", missingCountryCol="white")
-
-mapCountryData(n, nameColumnToPlot="value", mapTitle="Eurasia",
-  mapRegion = "Eurasia",
-  colourPalette="terrain",
-  addLegend=FALSE,
-  oceanCol="lightblue", missingCountryCol="white")
-
-mapCountryData(n, nameColumnToPlot="value", mapTitle="South America",
-  mapRegion = "Latin America",
-  colourPalette="terrain",
+  colourPalette="Red",
   addLegend=FALSE,
   oceanCol="lightblue", missingCountryCol="white")
 
 ```
+
+```{r MapGraphic2}
+
+
+png("diaspora_final_project/eurasia_map.png",width=800,height=600,units="px")
+eurasia <- mapCountryData(n, nameColumnToPlot="value", mapTitle="Overview of Armenian Diaspora Communities in Eurasia",
+  mapRegion = "Eurasia",
+  colourPalette="Red",
+  addLegend=FALSE,
+  oceanCol="lightblue", missingCountryCol="white")
+
+```
+
+```{r MapGraphic3}
+
+
+png("diaspora_final_project/latin_map.png",width=800,height=600,units="px")
+latin <- mapCountryData(n, mapTitle="Overview of Armenian Diaspora Communities in South America", nameColumnToPlot="value", 
+  mapRegion = "Latin America",
+  colourPalette="Red",
+  addLegend=FALSE,
+  oceanCol="lightblue", missingCountryCol="white")
+
+```
+
+
 
 ```{r histogram}
 
@@ -108,8 +124,15 @@ data_histogram <- all_data_merged %>%
 
 histo.df <- as.data.frame(data_histogram)
 
+write_rds(histo.df, "diaspora_final_project/histo.rds")
+
 
 ```
+
+
+
+
+
 
 ```{r Diaspora Data Highlights}
 
@@ -127,11 +150,13 @@ d3 <- data.frame(
 
 n3 <- joinCountryData2Map(d3, joinCode="NAME", nameJoinColumn="country")
 
+png("diaspora_final_project/diasporasgenocide.png",width=800,height=600,units="px")
 mapCountryData(n3, nameColumnToPlot="value", mapTitle="Diasporas from Armenian Genocide",
   mapRegion = "World",
-  colourPalette="red",
+  colourPalette="negpos8",
   addLegend=FALSE,
-  oceanCol="lightblue", missingCountryCol="white")
+  oceanCol="lightblue", missingCountryCol="white",
+  lwd = 0.7)
 
 # This map here is showing us
 # the diasporas which exist after
@@ -148,12 +173,13 @@ d4 <- data.frame(
 
 n4 <- joinCountryData2Map(d4, joinCode="NAME", nameJoinColumn="country")
 
-
+png("diaspora_final_project/postsoviet.png",width=800,height=600,units="px")
 mapCountryData(n4, nameColumnToPlot="value", mapTitle="Post Soviet Diasporas",
   mapRegion = "World",
-  colourPalette="blue",
+  colourPalette="white2black",
   addLegend=FALSE,
-  oceanCol="lightblue", missingCountryCol="white")
+  oceanCol="lightblue", missingCountryCol="white",
+  lwd = 0.7)
 
 # These are Diasporas which exist
 # for very specific historic reasons
@@ -161,21 +187,23 @@ mapCountryData(n4, nameColumnToPlot="value", mapTitle="Post Soviet Diasporas",
 # no particular special explanation other
 # other than migration for economic
 
-d4 <- data.frame(
+d5 <- data.frame(
   country=c( "Egypt",
             "Iran",
             "Iraq", "Sweden","Syria","United Kingdom", "Germany",
             "Switzerland", "Israel"),
   value=c(2, 2, 2, 2, 2, 2, -2, 2,2))
 
-n4 <- joinCountryData2Map(d4, joinCode="NAME", nameJoinColumn="country")
+n5 <- joinCountryData2Map(d5, joinCode="NAME", nameJoinColumn="country")
 
-
-mapCountryData(n4, nameColumnToPlot="value", mapTitle="Historic or 'Random' Diasporas",
+png("diaspora_final_project/historic.png",width=800,height=600,units="px")
+mapCountryData(n5, nameColumnToPlot="value", mapTitle="Historic or Random Diasporas",
   mapRegion = "Eurasia",
-  colourPalette="Red",
+  colourPalette="palette",
   addLegend=FALSE,
-  oceanCol="lightblue", missingCountryCol="white")
+  oceanCol="lightblue", missingCountryCol="white",
+  lwd = 0.7)
+
 
 
 ```
@@ -195,7 +223,7 @@ mapCountryData(n4, nameColumnToPlot="value", mapTitle="Historic or 'Random' Dias
 
 regression_for_graph <- lm(Number_Comm ~ Population + Post_Soviet, data = all_data_merged)
 
-
+png("diaspora_final_project/regression.png",width=800,height=600,units="px")
 regression_graph <- ggplot(regression_for_graph, aes(x= Population, y = Number_Comm)) +
   geom_point( alpha = 0.5) +
   geom_smooth(method = "lm", se = FALSE) +
