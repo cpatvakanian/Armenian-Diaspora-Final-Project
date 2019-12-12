@@ -24,6 +24,7 @@ library(gt)
 library(maps)
 library(png)
 library(purrr)
+library(reprex)
 library(stargazer)
 library(tibble)
 library(forcats)
@@ -46,14 +47,6 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r Setting up Data, warning = FALSE}
-
-# Loading in previously cleaned data from Wikipedia
-
-diasporas <- read_csv(file = 'diaspora_data.csv') 
-
-diasporas %>%
-  slice(1:68) %>%
-  mutate(Population = Population/1000)
 
 # Data is from embassies website: https://www.embassypages.com/armenia
 
@@ -136,7 +129,6 @@ data_histogram <- all_data_merged %>%
 histo.df <- as.data.frame(data_histogram)
 
 write_rds(histo.df, "diaspora_final_project/histo.rds")
-
 
 ```
 
@@ -261,11 +253,17 @@ regression_graph <- ggplot(regression_for_graph, aes(x= Population, y = Number_C
 # in but I am not certain, any way the sidebar works
 # locally but not when I publish :(
 
+# Loading in previously cleaned data from Wikipedia
+
+diasporas <- read_csv(file = 'diaspora_data.csv') 
+
+diasporas %>%
+  slice(1:68) %>%
+  mutate(Population = Population/1000)
+
 diasporas.df <- as.data.frame(diasporas)
 
-save(diasporas.df,file="diasporas.df")
-
-write_rds(diasporas, "diaspora_final_project/diasporas1.rds")
+write_rds(diasporas.df, "diaspora_final_project/diasporasA.rds")
 
 ```
 

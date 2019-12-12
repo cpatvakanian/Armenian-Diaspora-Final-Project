@@ -12,15 +12,19 @@ library(png)
 library(ggplot2)
 library(fs)
 library(sf)
+library(dplyr)
+library(reprex)
 library(stringr)
 library(gganimate)
+library(vembedr)
 
 
 # The ui specifies what we are going to output for the graphics,
 # and in this specific case I am saying I want to have the
 # website show a title, and two pages which say graphic and about
 
-histo.df <- read_rds("histo.rds")
+diasporas <- read_rds("./diasporasA.rds")
+histo.df <- read_rds("./histo.rds")
 world_map <- readPNG("world_map.png")
 eurasia_map <- readPNG("eurasia_map.png")
 latin_map <- readPNG("latin_map.png")
@@ -28,7 +32,6 @@ regression <- readPNG("regression.png")
 historic <- readPNG("historic.png")
 diasporasgenocide <- readPNG("diasporasgenocide.png")
 postsoviet <- readPNG("postsoviet.png")
-diasporas1 <- read_rds("diasporas1.rds")
 
 ui <- fluidPage(
     navbarPage("Armenian Diaspora Project",
@@ -227,7 +230,17 @@ ui <- fluidPage(
                         h2("Data on the Diaspora"),
                         p("Finding data on the Armenian diaspora is notoriously difficult, but Wikipedia and Google trends are able to capture a rough idea of where Armenians are generally located. By looking at compilations of various sources on Wikipedia's Armenian diaspora Communities page ", a( "Armenian diaspora Communities page", href = "https://en.wikipedia.org/wiki/Largest_Armenian_diaspora_communities")," I am able to confirm for a variety of countries the number of communities and also the populations of those communities. Additionally, by looking at data on the ", a( "Google Trends Website", href = "https://trends.google.com/trends/?geo=US")," I am able to look at these countries and try to look at trends or key words for Armenians that I think might confirm the census data. Interestingly, there are different and similar trends for Armenians depending on which community we are looking at (old vs newly formed)."),
                         h2("About the Author"),
-                        p("I am a senior at Harvard College studying Economics with a minor in Government.")
+                        p("I am a senior at Harvard College studying Economics with a minor in Government."),
+                        h2("Video About the Project"),
+                        p("Check out this video about my Shiny App project!"),
+                        br(),
+                        br(),
+                        embed_youtube("nTIfHxcn2v0"),
+                        h2("Submission to The Undergraduate Statistics Project Competition"),
+                        p("I wrote a paper about this project to enter a contest called the The Undergraduate Statistics Project Competition.
+                          Check it out below!"),
+                        tags$iframe(style="height:400px; width:70%; scrolling=yes",
+                                    src="Gov_1005_paper.pdf")
                ))))
 
 # Here, server defines what that output we specified earlier will be
@@ -271,10 +284,16 @@ server <- function(input, output){
         list(src = filename)
     },deleteFile = FALSE)
     
+    datareact1 <- reactive({
+      diasporas %>%
+        filter(str_detect(Country,fixed(input$input_1)))
+    })
+    
     
     output$Eurasian_Diaspora <- renderPlot({
-      diasporas1 %>%
+      diasporas %>%
         filter(str_detect(Country,fixed(input$input_1))) %>%
+        mutate(Population = Population/1000) %>%
         ggplot(aes(x=Area, y=Population)) + geom_col(color="red", fill = "red") +
         labs(
           title=paste("Population of Communities in", input$input_1),
