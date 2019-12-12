@@ -1,9 +1,10 @@
 ---
 title: "final_project"
+author: "Cristopher Patvakanian"
 output: html_document
 ---
 
-```{r setup, include=FALSE, warnings= FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 
 # Putting in all of the necessary libraries
@@ -40,13 +41,16 @@ library(tidyverse)
 
 ```
 
-## R Markdown
+## Setting up and Reading in Data
+We can see the cleaned data being read in here.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r Setting up Data, message = FALSE,  warning=FALSE}
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r Setting up Data, warning = FALSE}
+# I included message equals false because even
+# after parsing the columns as false and asking
+# in study halls, we were unable to clear the
+# message asking me to read in the data with
+# particular columns
 
 # Data is from embassies website: https://www.embassypages.com/armenia
 
@@ -61,11 +65,19 @@ all_data_merged <- read_csv(file = "all_data.csv") %>%
 ```
 
 
-```{r MapGraphic 1}
+
+```{r MapGraphic 1, echo = FALSE, include = FALSE, warning = FALSE, message = FALSE}
 
 # Using joinCountryData to create maps
 # about Armenian Diaspora
 # this is the maps for the homepage
+
+# I have used warning, include, and message
+# equals false for all of these r chunks
+# that use the MapCountryData because I was
+# unable to get rid of the messages which automatically
+# come included with the package about which countries
+# I include and which ones I didn't
 
 d <- data.frame(
   country=c("Argentina", "Brazil", "Bulgaria", "Canada", "Egypt",
@@ -85,7 +97,8 @@ world <- mapCountryData(n, nameColumnToPlot="value", mapTitle="Overview of Armen
 
 ```
 
-```{r MapGraphic2}
+
+```{r MapGraphic2, message = FALSE, warning=FALSE}
 
 #Second Map for the homepage
 
@@ -98,7 +111,8 @@ eurasia <- mapCountryData(n, nameColumnToPlot="value", mapTitle="Overview of Arm
 
 ```
 
-```{r MapGraphic3}
+
+```{r MapGraphic3, echo = FALSE, include = TRUE, warning = FALSE, message = FALSE}
 
 # Third Map for the homepage
 
@@ -112,12 +126,18 @@ latin <- mapCountryData(n, mapTitle="Overview of Armenian Diaspora Communities i
 ```
 
 
-```{r histogram}
+
+```{r histogram, include = TRUE, warning=FALSE}
 
 # here I am manipulating the data
-# to bbe read as integers in order
+# to be read as integers in order
 # to be able to feed it into my histogram
 # on the home page
+
+# I am using warning=False here because
+# it says NAs introduced by coercion,
+# but it is unclear, despite my best efforts
+# why they are being introduced
 
 all_data_merged %>% mutate_if(is.character,as.integer)
 
@@ -133,7 +153,7 @@ write_rds(histo.df, "diaspora_final_project/histo.rds")
 ```
 
 
-```{r Diaspora Data Highlights}
+```{r Diaspora Data Highlights,echo = FALSE, include = FALSE, warning = FALSE, message = FALSE}
 
 # here I am specifing countries which
 # have diasporas from the times of 
@@ -156,6 +176,7 @@ mapCountryData(n3, nameColumnToPlot="value", mapTitle="Diasporas from Armenian G
   addLegend=FALSE,
   oceanCol="lightblue", missingCountryCol="white",
   lwd = 0.7)
+
 
 # This map here is showing us
 # the diasporas which exist after
@@ -207,8 +228,31 @@ mapCountryData(n5, nameColumnToPlot="value", mapTitle="Historic or Random Diaspo
 
 ```
 
+## Creating Correlation Graphic
+We can see the correlation graphic being created here and some of those summary statistics.
 
-```{r What Influences Number of Communities}
+```{r What Influences Number of Communities, include = TRUE}
+
+# Here I am using this data to show
+# a correlation or simple regression of 
+# number of communities with population
+
+regression_for_graph <- lm(Number_Comm ~ Population, data = all_data_merged)
+summary(regression_for_graph)
+
+
+png("diaspora_final_project/regression.png",width=800,height=600,units="px")
+regression_graph <- ggplot(regression_for_graph, aes(x= Population, y = Number_Comm)) +
+  geom_point( alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Number of Communities vs Population", subtitle = "Relationship Looks Positive", caption= "Wikipedia",
+       x = "Population Numbers (Official & Estimates)", y = "Number of Communities in a Country")
+
+```
+## Multivariate Regression Summary Statistics
+Here we have the summary statistics of the multivariate regression.
+
+```{r multivariate regression}
 
 # Regression of data, but this is very
 # tricky to try and visualize because
@@ -222,38 +266,42 @@ no_russia <- all_data_merged %>%
   filter(Country !="Russia")
 
 no_russia <- lm(Population ~ TopTen_Gen + TopTen_Dux + Number_Comm + Embassies + Number_Comm + Post_Soviet, data = no_russia)
+summary(no_russia)
+
+```
+
+## Multivariate Regression Output Using StarGazer
+Here we have the regression table output.
+
+```{r getting table to be output, warning=FALSE, results='asis'}
+
+# Here I have just created the output
+# for the multivariate regression in a 
+# nice table format
+
+# I needed to include warning=FALSE and
+# results='asis' in order to get rid of the
+# output which appears in my markdown that 
+# is part of the functionality of stargazer
+# and to the best of my understanding not
+# an issue with the regression
 
 stargazer(no_russia, type = "html", title=" ", digits=1, 
           covariate.labels=c("Top 10 Genocide Search","Top 10 Duxov Search","Number of Communities",
  "Has an Armenian Embassy","Post Soviet Country"), 
           out="regression.html")
 
-# Here I am using this data to show
-# a correlation or simple regression of 
-# number of communities with population
-
-regression_for_graph <- lm(Number_Comm ~ Population, data = all_data_merged)
-
-png("diaspora_final_project/regression.png",width=800,height=600,units="px")
-regression_graph <- ggplot(regression_for_graph, aes(x= Population, y = Number_Comm)) +
-  geom_point( alpha = 0.5) +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Number of Communities vs Population", subtitle = "Relationship Looks Positive", caption= "Wikipedia",
-       x = "Population Numbers (Official & Estimates)", y = "Number of Communities in a Country")
-  
 ```
 
 
-```{r making sidebarpanel}
+## Making Sidebar Panel
+Here we can see the data I used to create the sidebar panel.
 
-# here is where the problems come in my data, as I am
-# having a lot of trouble trying to get data 
-# to be detected by my sidebar object. I think
-# there is an error caused by how I read this object
-# in but I am not certain, any way the sidebar works
-# locally but not when I publish :(
+
+```{r making sidebarpanel, message= FALSE}
 
 # Loading in previously cleaned data from Wikipedia
+# to have my sidebar panel created
 
 diasporas <- read_csv(file = 'diaspora_data.csv') 
 
@@ -267,11 +315,13 @@ write_rds(diasporas.df, "diaspora_final_project/diasporasA.rds")
 
 ```
 
+## About Page Data:
 
 
 ```{r About}
 
-# have this completed from previous one
+# Had the about completed from a previously
+# completed milestone project
 ```
 ## About the Armenian Diaspora Data Project
 This project is trying to better understand the trends and characteristics of the Armenian Diaspora communities which exist all over the world. Armenian Diaspora communities have existed for hundreds of years, but the primary large communities that scattered and exist today come from two major events in Armenian history. The first event was the Armenian Genocide of 1915, during which 1.5 Armenians and many other Christian minorities such as the Assyrians and Greeks were killed due to the genocidal campaign of the Ottoman Turkish government. The result of the genocide was the mass exodus of Armenians to countries such as Syria, France, Lebanon, Russia, the United States, Australia and even Argentina. The second major event which explains the diaspora communities of that exist in other parts of the world was the collapse of the USSR and subsequent socio-economic crisis, after which many Armenians immigrated to the United States, Russia, and various other countries. Of course, there also exist other older, but much smaller communities in Jerusalem and India - which have ties back to ancient Armenian religious ties and trade expeditions.

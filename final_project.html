@@ -9,6 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Cristopher Patvakanian" />
 
 
 <title>final_project</title>
@@ -362,45 +363,14 @@ summary {
 
 
 <h1 class="title toc-ignore">final_project</h1>
+<h4 class="author">Cristopher Patvakanian</h4>
 
 </div>
 
 
-<div id="r-markdown" class="section level2">
-<h2>R Markdown</h2>
-<p>This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <a href="http://rmarkdown.rstudio.com" class="uri">http://rmarkdown.rstudio.com</a>.</p>
-<p>When you click the <strong>Knit</strong> button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:</p>
-<pre><code>## Parsed with column specification:
-## cols(
-##   Country = col_character(),
-##   Has_Emb = col_double()
-## )</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   Country = col_character(),
-##   TopTen_Gen = col_double(),
-##   TopTen_Dux = col_double(),
-##   Number_Comm = col_double(),
-##   Embassies = col_double(),
-##   Population = col_double(),
-##   Post_Soviet = col_double()
-## )</code></pre>
-<pre><code>## 26 codes from your data successfully matched countries in the map
-## 0 codes from your data failed to match with a country code in the map
-## 217 codes from the map weren't represented in your data</code></pre>
-<pre><code>## You asked for 7 quantiles, only 1 could be created in quantiles classification</code></pre>
-<pre><code>## Warning in rwmGetColours(colourPalette, numColours): colourPalette should be set to either a vector of colours or one of :white2Black black2White palette heat topo terrain rainbow negpos8 negpos9 
-## setting to heat colours as default</code></pre>
-<pre><code>## Warning in setMapExtents(mapRegion): The mapRegion you specified(World) needs to
-## be a country name from getMap()$NAME or one of : (eurasia africa latin america
-## north america uk oceania asia ).Plotting whole world</code></pre>
-<pre><code>## You asked for 7 quantiles, only 1 could be created in quantiles classification</code></pre>
-<pre><code>## Warning in rwmGetColours(colourPalette, numColours): colourPalette should be set to either a vector of colours or one of :white2Black black2White palette heat topo terrain rainbow negpos8 negpos9 
-## setting to heat colours as default</code></pre>
-<pre><code>## You asked for 7 quantiles, only 1 could be created in quantiles classification</code></pre>
-<pre><code>## Warning in rwmGetColours(colourPalette, numColours): colourPalette should be set to either a vector of colours or one of :white2Black black2White palette heat topo terrain rainbow negpos8 negpos9 
-## setting to heat colours as default</code></pre>
-<pre><code>## Warning: NAs introduced by coercion</code></pre>
+<div id="setting-up-and-reading-in-data" class="section level2">
+<h2>Setting up and Reading in Data</h2>
+<p>We can see the cleaned data being read in here.</p>
 <pre><code>## # A tibble: 26 x 7
 ##    Country TopTen_Gen TopTen_Dux Number_Comm Embassies Population Post_Soviet
 ##      &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;
@@ -415,62 +385,275 @@ summary {
 ##  9      NA          0          0           2         1      30000           0
 ## 10      NA          0          0           2         1      62000           0
 ## # … with 16 more rows</code></pre>
-<pre><code>## 14 codes from your data successfully matched countries in the map
-## 0 codes from your data failed to match with a country code in the map
-## 229 codes from the map weren't represented in your data</code></pre>
-<pre><code>## You asked for 7 quantiles, only 1 could be created in quantiles classification</code></pre>
-<pre><code>## Warning in setMapExtents(mapRegion): The mapRegion you specified(World) needs to
-## be a country name from getMap()$NAME or one of : (eurasia africa latin america
-## north america uk oceania asia ).Plotting whole world</code></pre>
-<pre><code>## 13 codes from your data successfully matched countries in the map
-## 0 codes from your data failed to match with a country code in the map
-## 230 codes from the map weren't represented in your data</code></pre>
-<pre><code>## You asked for 7 quantiles, only 1 could be created in quantiles classification</code></pre>
-<pre><code>## Warning in rwmGetColours(colourPalette, numColours): colourPalette should be set to either a vector of colours or one of :white2Black black2White palette heat topo terrain rainbow negpos8 negpos9 
-## setting to heat colours as default
-
-## Warning in rwmGetColours(colourPalette, numColours): The mapRegion you specified(World) needs to be a country name from getMap()$NAME or one of : (eurasia africa latin america north america uk oceania asia ).Plotting whole world</code></pre>
-<pre><code>## 9 codes from your data successfully matched countries in the map
-## 0 codes from your data failed to match with a country code in the map
-## 234 codes from the map weren't represented in your data</code></pre>
-<pre><code>## You asked for 7 quantiles, only 1 could be created in quantiles classification</code></pre>
-<pre><code>## Warning in rwmGetColours(colourPalette, numColours): 8 colours specified and 1
-## required, using interpolation to calculate colours</code></pre>
+</div>
+<div id="creating-correlation-graphic" class="section level2">
+<h2>Creating Correlation Graphic</h2>
+<p>We can see the correlation graphic being created here and some of those summary statistics.</p>
 <pre><code>## 
-## &lt;table style=&quot;text-align:center&quot;&gt;&lt;tr&gt;&lt;td colspan=&quot;2&quot; style=&quot;border-bottom: 1px solid black&quot;&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;em&gt;Dependent variable:&lt;/em&gt;&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td colspan=&quot;1&quot; style=&quot;border-bottom: 1px solid black&quot;&gt;&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;Population&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td colspan=&quot;2&quot; style=&quot;border-bottom: 1px solid black&quot;&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;Top 10 Genocide Search&lt;/td&gt;&lt;td&gt;4,745.5&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;(15,336.5)&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;Top 10 Duxov Search&lt;/td&gt;&lt;td&gt;7,710.3&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;(15,207.7)&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;Number of Communities&lt;/td&gt;&lt;td&gt;6,943.5&lt;sup&gt;**&lt;/sup&gt;&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;(3,097.9)&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;Has an Armenian Embassy&lt;/td&gt;&lt;td&gt;2,993.1&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;(11,879.8)&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;Post Soviet Country&lt;/td&gt;&lt;td&gt;-7,051.2&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;(11,449.1)&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;Constant&lt;/td&gt;&lt;td&gt;10,164.7&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;(10,062.9)&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;/td&gt;&lt;td&gt;&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td colspan=&quot;2&quot; style=&quot;border-bottom: 1px solid black&quot;&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;Observations&lt;/td&gt;&lt;td&gt;25&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.4&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;Adjusted R&lt;sup&gt;2&lt;/sup&gt;&lt;/td&gt;&lt;td&gt;0.2&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;Residual Std. Error&lt;/td&gt;&lt;td&gt;22,472.9 (df = 19)&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;F Statistic&lt;/td&gt;&lt;td&gt;2.1 (df = 5; 19)&lt;/td&gt;&lt;/tr&gt;
-## &lt;tr&gt;&lt;td colspan=&quot;2&quot; style=&quot;border-bottom: 1px solid black&quot;&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;text-align:left&quot;&gt;&lt;em&gt;Note:&lt;/em&gt;&lt;/td&gt;&lt;td style=&quot;text-align:right&quot;&gt;&lt;sup&gt;*&lt;/sup&gt;p&lt;0.1; &lt;sup&gt;**&lt;/sup&gt;p&lt;0.05; &lt;sup&gt;***&lt;/sup&gt;p&lt;0.01&lt;/td&gt;&lt;/tr&gt;
-## &lt;/table&gt;</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   Area = col_character(),
-##   Country = col_character(),
-##   Population = col_number()
-## )</code></pre>
+## Call:
+## lm(formula = Number_Comm ~ Population, data = all_data_merged)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.3053 -0.4856  0.1210  0.8052  2.9834 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 1.981e-01  4.511e-01   0.439    0.665    
+## Population  6.810e-05  8.682e-06   7.843 4.47e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.725 on 24 degrees of freedom
+## Multiple R-squared:  0.7194, Adjusted R-squared:  0.7077 
+## F-statistic: 61.52 on 1 and 24 DF,  p-value: 4.471e-08</code></pre>
+</div>
+<div id="multivariate-regression-summary-statistics" class="section level2">
+<h2>Multivariate Regression Summary Statistics</h2>
+<p>Here we have the summary statistics of the multivariate regression.</p>
+<pre><code>## 
+## Call:
+## lm(formula = Population ~ TopTen_Gen + TopTen_Dux + Number_Comm + 
+##     Embassies + Number_Comm + Post_Soviet, data = no_russia)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -24932 -15108  -6454   6950  44899 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)    10165      10063   1.010   0.3251  
+## TopTen_Gen      4746      15336   0.309   0.7604  
+## TopTen_Dux      7710      15208   0.507   0.6180  
+## Number_Comm     6944       3098   2.241   0.0371 *
+## Embassies       2993      11880   0.252   0.8038  
+## Post_Soviet    -7051      11449  -0.616   0.5453  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 22470 on 19 degrees of freedom
+## Multiple R-squared:  0.3539, Adjusted R-squared:  0.1838 
+## F-statistic: 2.081 on 5 and 19 DF,  p-value: 0.1127</code></pre>
+</div>
+<div id="multivariate-regression-output-using-stargazer" class="section level2">
+<h2>Multivariate Regression Output Using StarGazer</h2>
+<p>Here we have the regression table output.</p>
+<table style="text-align:center">
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="1" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+Population
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Top 10 Genocide Search
+</td>
+<td>
+4,745.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(15,336.5)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Top 10 Duxov Search
+</td>
+<td>
+7,710.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(15,207.7)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Number of Communities
+</td>
+<td>
+6,943.5<sup>**</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(3,097.9)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Has an Armenian Embassy
+</td>
+<td>
+2,993.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(11,879.8)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Post Soviet Country
+</td>
+<td>
+-7,051.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(11,449.1)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+10,164.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(10,062.9)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+25
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+R<sup>2</sup>
+</td>
+<td>
+0.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Adjusted R<sup>2</sup>
+</td>
+<td>
+0.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Residual Std. Error
+</td>
+<td>
+22,472.9 (df = 19)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+F Statistic
+</td>
+<td>
+2.1 (df = 5; 19)
+</td>
+</tr>
+<tr>
+<td colspan="2" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td style="text-align:right">
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
+</td>
+</tr>
+</table>
+</div>
+<div id="making-sidebar-panel" class="section level2">
+<h2>Making Sidebar Panel</h2>
+<p>Here we can see the data I used to create the sidebar panel.</p>
 <pre><code>## # A tibble: 68 x 3
 ##    Area                Country       Population
 ##    &lt;chr&gt;               &lt;chr&gt;              &lt;dbl&gt;
@@ -485,6 +668,9 @@ summary {
 ##  9 Tbilisi             Georgia             82.6
 ## 10 Beirut              Lebanon             75  
 ## # … with 58 more rows</code></pre>
+</div>
+<div id="about-page-data" class="section level2">
+<h2>About Page Data:</h2>
 </div>
 <div id="about-the-armenian-diaspora-data-project" class="section level2">
 <h2>About the Armenian Diaspora Data Project</h2>

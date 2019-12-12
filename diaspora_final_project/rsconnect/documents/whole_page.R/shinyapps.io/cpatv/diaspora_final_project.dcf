@@ -5,8 +5,8 @@ account: cpatv
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1553230
-bundleId: 2634726
+bundleId: 2660339
 url: https://cpatv.shinyapps.io/diaspora_final_project/
-when: 1575347700.96609
+when: 1576104463.69431
 asMultiple: FALSE
 asStatic: FALSE
