@@ -289,7 +289,7 @@ Here we have the regression table output.
 stargazer(no_russia, type = "html", title=" ", digits=1, 
           covariate.labels=c("Top 10 Genocide Search","Top 10 Duxov Search","Number of Communities",
  "Has an Armenian Embassy","Post Soviet Country"), 
-          out="regression.html")
+          out="diaspora_final_project/regression.html")
 
 ```
 
